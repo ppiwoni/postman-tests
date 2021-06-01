@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "390f2954-3f23-4b1f-8b4a-ec54b49cfe85",
+		"name": "GitHub Api Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/users/octocat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Zapisanie response\r",
+							"const jsonResponse = pm.response.json();\r",
+							"\r",
+							"//Przekazanie wartości atrybutu \"name\" do zmiennej \"nameValue\"\r",
+							"var nameValue = jsonResponse.name;\r",
+							"\r",
+							"//Wypisanie wartości na konsoli\r",
+							"console.log(nameValue);\r",
+							"\r",
+							"//Ustawienie zmiennej środowiskowej \"name\"\r",
+							"postman.setEnvironmentVariable(\"name\", nameValue);\r",
+							"\r",
+							"//Weryfikacja statusu\r",
+							"pm.test(\"Status test\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Weryfikacja nagłówków\r",
+							"pm.test(\"Headers test\", function (){\r",
+							"  pm.expect(pm.response.headers.get('Server')).to.equal('GitHub.com');\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.contains('application/json');\r",
+							"});\r",
+							"\r",
+							"//Weryfikacja ciasteczek\r",
+							"pm.test(\"Cookies test\", function (){\r",
+							"  pm.expect(pm.cookies.has('CSRF')).to.be.false;\r",
+							"});\r",
+							"\r",
+							"//Weryfikacja JSON'a\r",
+							"pm.test(\"Response body test\", function (){\r",
+							"  pm.expect(jsonResponse.login).to.equal(\"octocat\");\r",
+							"  pm.expect(jsonResponse.site_admin).to.equal(false);\r",
+							"  pm.expect(jsonResponse.updated_at).to.contains(\"2021\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/users/octocat",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"octocat"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
